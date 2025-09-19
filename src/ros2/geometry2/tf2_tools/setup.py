@@ -1,0 +1,37 @@
+from setuptools import setup
+
+package_name = 'tf2_tools'
+
+setup(
+    name=package_name,
+    version='0.36.14',
+    packages=[package_name],
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
+    install_requires=['setuptools'],
+    zip_safe=True,
+    author='Wim Meeussen',
+    maintainer='Alejandro Hernandez Cordero, Chris Lalancette',
+    maintainer_email='alejandro@openrobotics.org, clalancette@openrobotics.org',
+    keywords=['ROS'],
+    classifiers=[
+        'Intended Audience :: Developers',
+        'Programming Language :: Python',
+        'Topic :: Software Development',
+    ],
+    description='tf2_tools for debugging',
+    license='Apache License, Version 2.0',
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
+    entry_points={
+        'console_scripts': [
+            'view_frames = tf2_tools.view_frames:main',
+        ],
+    },
+)
