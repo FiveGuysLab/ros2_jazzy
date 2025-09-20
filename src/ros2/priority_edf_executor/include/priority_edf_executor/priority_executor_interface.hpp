@@ -46,23 +46,25 @@ public:
     bool add_handles_to_wait_set(rcl_wait_set_t *wait_set) override;
 
     // commented some stuff out as it is undecided 
-    
-    // // executable retrieval methods
-    // void get_next_executable(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
-    // void get_next_subscription(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
-    // void get_next_service(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
-    // void get_next_client(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
-    // void get_next_timer(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
-    // void get_next_waitable(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
 
-    // // EDF specific methods
-    // void post_execute(rclcpp::AnyExecutable any_exec, int thread_id = -1);
-    // void set_executable_deadline(std::shared_ptr<const void> handle, int deadline, int period, ExecutableType t, int chain_id);
+    /*
+    // executable retrieval methods
+    void get_next_executable(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
+    void get_next_subscription(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
+    void get_next_service(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
+    void get_next_client(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
+    void get_next_timer(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
+    void get_next_waitable(rclcpp::AnyExecutable &any_exec, const WeakNodeList &weak_nodes) override;
+
+    // EDF specific methods
+    void post_execute(rclcpp::AnyExecutable any_exec, int thread_id = -1);
+    void set_executable_deadline(std::shared_ptr<const void> handle, int deadline, int period, ExecutableType t, int chain_id);
     
     // chain management methods
     void add_callback_to_chain(std::shared_ptr<const void> callback, int chain_id);
     std::vector<int> get_chains_for_callback(std::shared_ptr<const void> callback);
     std::vector<PriorityExecutable> get_executables_in_chain(int chain_id);
+    */
 
 private:
     std::shared_ptr<VoidAlloc> allocator_;
