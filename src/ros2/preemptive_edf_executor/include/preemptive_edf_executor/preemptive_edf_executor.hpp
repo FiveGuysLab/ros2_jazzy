@@ -17,7 +17,7 @@
 
 #include "rclcpp/executor.hpp"
 #include "rclcpp/macros.hpp"
-// #include "rclcpp/memory_strategies.hpp" // TODO: Add our own memory strategy
+#include "preemptive_edf_executor/preemptive_edf_executor_interface.hpp"
 #include "rclcpp/visibility_control.hpp"
 
 namespace preemptive_edf_executor
