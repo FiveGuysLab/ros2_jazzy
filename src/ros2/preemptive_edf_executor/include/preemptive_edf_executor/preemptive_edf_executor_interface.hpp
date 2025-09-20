@@ -1,5 +1,5 @@
-#ifndef PRIORITY_EDF_EXECUTOR_INTERFACE
-#define PRIORITY_EDF_EXECUTOR_INTERFACE
+#ifndef PREEMPTIVE_EDF_EXECUTOR_INTERFACE
+#define PREEMPTIVE_EDF_EXECUTOR_INTERFACE
 
 enum ExecutableType
 {
@@ -10,7 +10,7 @@ enum ExecutableType
   WAITABLE
 };
 
-class PriorityExecutable {
+class PreemptiveEDFExecutable {
 public:
     std::shared_ptr<const void> handle;
     ExecutableType type;
@@ -21,20 +21,20 @@ public:
 
     std::shared_ptr<rclcpp::TimerBase> timer_handle;
 
-    PriorityExecutable(std::shared_ptr<const void> handle, ExecutableType type, int deadline, int period, int runtime, int chain_id) : handle(handle), type(type), deadline(deadline), period(period), runtime(runtime), chain_id(chain_id) {}
+    PreemptiveEDFExecutable(std::shared_ptr<const void> handle, ExecutableType type, int deadline, int period, int runtime, int chain_id) : handle(handle), type(type), deadline(deadline), period(period), runtime(runtime), chain_id(chain_id) {}
 
     // compare operator overload 
-    bool operator==(const PriorityExecutable &other) const;
+    bool operator==(const PreemptiveEDFExecutable &other) const;
 
 };
 
 template <typename Alloc = std::allocator<void>> //template to allow for custom memory allocator
-class PriorityExecutorInterface : rclcpp::memory_strategy::MemoryStrategy
+class PreemptiveEDFExecutorInterface : rclcpp::memory_strategy::MemoryStrategy
 {
 public:
     //constructor
-    explicit PriorityExecutorInterface(std::shared_ptr<Alloc> allocator);
-    PriorityExecutorInterface();
+    explicit PreemptiveEDFExecutorInterface(std::shared_ptr<Alloc> allocator);
+    PreemptiveEDFExecutorInterface();
 
     //overrides from MemoryStrategy base class
     void add_guard_condition(const rclcpp::GuardCondition & guard_condition) override;
@@ -63,7 +63,7 @@ public:
     // chain management methods
     void add_callback_to_chain(std::shared_ptr<const void> callback, int chain_id);
     std::vector<int> get_chains_for_callback(std::shared_ptr<const void> callback);
-    std::vector<PriorityExecutable> get_executables_in_chain(int chain_id);
+    std::vector<PreemptiveEDFExecutable> get_executables_in_chain(int chain_id);
     */
 
 private:
@@ -71,7 +71,7 @@ private:
 
     //maps for data from algorithm
     std::map<std::shared_ptr<const void>, std::vector<int>> callback_to_chain_ids_;
-    std::map<int, std::vector<PriorityExecutable>> chain_to_executables_;
+    std::map<int, std::vector<PreemptiveEDFExecutable>> chain_to_executables_;
     std::map<int, std::vector<int>> chain_to_threads_;
 
     // storage => required for ROS2 compatibility
@@ -83,8 +83,8 @@ private:
     std::vector<const rclcpp::GuardCondition *> guard_conditions_;
 
     // helper methods => SUBJECT TO CHANGE
-    std::shared_ptr<PriorityExecutable> get_and_reset_executable(std::shared_ptr<const void> executable, ExecutableType t);
-    void add_executable_to_ready_queue(std::shared_ptr<PriorityExecutable> executable);
+    std::shared_ptr<PreemptiveEDFExecutable> get_and_reset_executable(std::shared_ptr<const void> executable, ExecutableType t);
+    void add_executable_to_ready_queue(std::shared_ptr<PreemptiveEDFExecutable> executable);
 };
 
 
