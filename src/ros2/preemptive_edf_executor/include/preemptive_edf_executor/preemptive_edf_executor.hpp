@@ -1,5 +1,5 @@
-#ifndef PRIORITY_EDF_EXECUTOR__PRIORITY_EDF_EXECUTOR_HPP_
-#define PRIORITY_EDF_EXECUTOR__PRIORITY_EDF_EXECUTOR_HPP_
+#ifndef PREEMPTIVE_EDF_EXECUTOR__PREEMPTIVE_EDF_EXECUTOR_HPP_
+#define PREEMPTIVE_EDF_EXECUTOR__PREEMPTIVE_EDF_EXECUTOR_HPP_
 
 #include <rmw/rmw.h>
 
@@ -20,20 +20,20 @@
 // #include "rclcpp/memory_strategies.hpp" // TODO: Add our own memory strategy
 #include "rclcpp/visibility_control.hpp"
 
-namespace priority_edf_executor
+namespace preemptive_edf_executor
 {
 
-    /// Priority-based Earliest Deadline First (EDF) Executor
+    /// Preemptive-based Earliest Deadline First (EDF) Executor
     /**
      * This executor implements a preemptive-based EDF scheduling algorithm for ROS 2 callbacks.
      * It extends the multi-threaded execution model with priority and deadline awareness.
      */
-    class PriorityEDFExecutor : public rclcpp::Executor
+    class PreemptiveEDFExecutor : public rclcpp::Executor
     {
     public:
-        RCLCPP_SMART_PTR_DEFINITIONS(PriorityEDFExecutor)
+        RCLCPP_SMART_PTR_DEFINITIONS(PreemptiveEDFExecutor)
 
-        /// Constructor for PriorityEDFExecutor.
+        /// Constructor for PreemptiveEDFExecutor.
         /**
          * \param options common options for all executors
          * \param number_of_threads number of threads to have in the thread pool,
@@ -41,13 +41,13 @@ namespace priority_edf_executor
          * \param timeout maximum time to wait for work
          */
         RCLCPP_PUBLIC
-        explicit PriorityEDFExecutor(
+        explicit PreemptiveEDFExecutor(
             const rclcpp::ExecutorOptions &options = rclcpp::ExecutorOptions(),
             size_t number_of_threads = 0,
-            std::chrono::nanoseconds timeout = std::chrono::nanoseconds(-1), );
+            std::chrono::nanoseconds timeout = std::chrono::nanoseconds(-1));
 
         RCLCPP_PUBLIC
-        virtual ~PriorityEDFExecutor();
+        virtual ~PreemptiveEDFExecutor();
 
         /**
          * \sa rclcpp::Executor:spin() for more details
@@ -75,7 +75,7 @@ namespace priority_edf_executor
         get_next_executable(rclcpp::AnyExecutable &any_executable, std::chrono::nanoseconds timeout = std::chrono::nanoseconds(-1));
 
     private:
-        RCLCPP_DISABLE_COPY(PriorityEDFExecutor)
+        RCLCPP_DISABLE_COPY(PreemptiveEDFExecutor)
 
         /// Get the next executable with priority and deadline consideration
         /**
@@ -102,6 +102,6 @@ namespace priority_edf_executor
         /// TODO : Need to add priority and deadline maps based on README data
     };
 
-} // namespace priority_edf_executor
+} // namespace preemptive_edf_executor
 
-#endif // PRIORITY_EDF_EXECUTOR__PRIORITY_EDF_EXECUTOR_HPP_
+#endif // PREEMPTIVE_EDF_EXECUTOR__PREEMPTIVE_EDF_EXECUTOR_HPP_
