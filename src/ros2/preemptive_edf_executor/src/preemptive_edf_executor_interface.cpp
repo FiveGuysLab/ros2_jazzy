@@ -13,7 +13,7 @@ void PreemptiveEDFExecutorInterface::set_callback_details(std::shared_ptr<const 
     PreemptiveEDFExecutable executable(callback, type, deadline, period, runtime, chain_id);
     callback_to_chain_ids_[callback] = chain_id;
     chain_to_executables_[chain_id].push_back(executable);
-    chain_to_threads_[chain_id].push_back(std::this_thread::get_id());
+    // chain_to_threads_[chain_id].push_back(std::this_thread::get_id());
     store_handle(callback, type);
 }
 
