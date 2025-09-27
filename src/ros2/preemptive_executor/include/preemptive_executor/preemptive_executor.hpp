@@ -17,10 +17,10 @@
 
 #include "rclcpp/executor.hpp"
 #include "rclcpp/macros.hpp"
-#include "preemptive_edf_executor/preemptive_edf_executor_interface.hpp"
+#include "preemptive_executor/preemptive_executor_interface.hpp"
 #include "rclcpp/visibility_control.hpp"
 
-namespace preemptive_edf_executor
+namespace preemptive_executor
 {
 
     /// Preemptive-based Earliest Deadline First (EDF) Executor
@@ -28,10 +28,10 @@ namespace preemptive_edf_executor
      * This executor implements a preemptive-based EDF scheduling algorithm for ROS 2 callbacks.
      * It extends the multi-threaded execution model with priority and deadline awareness.
      */
-    class PreemptiveEDFExecutor : public rclcpp::Executor
+    class PreemptiveExecutor : public rclcpp::Executor
     {
     public:
-        RCLCPP_SMART_PTR_DEFINITIONS(PreemptiveEDFExecutor)
+        RCLCPP_SMART_PTR_DEFINITIONS(PreemptiveExecutor)
 
         /// Constructor for PreemptiveEDFExecutor.
         /**
@@ -41,13 +41,13 @@ namespace preemptive_edf_executor
          * \param timeout maximum time to wait for work
          */
         RCLCPP_PUBLIC
-        explicit PreemptiveEDFExecutor(
+        explicit PreemptiveExecutor(
             const rclcpp::ExecutorOptions &options = rclcpp::ExecutorOptions(),
             size_t number_of_threads = 0,
             std::chrono::nanoseconds timeout = std::chrono::nanoseconds(-1));
 
         RCLCPP_PUBLIC
-        virtual ~PreemptiveEDFExecutor();
+        virtual ~PreemptiveExecutor();
 
         /**
          * \sa rclcpp::Executor:spin() for more details
@@ -75,7 +75,7 @@ namespace preemptive_edf_executor
         get_next_executable(rclcpp::AnyExecutable &any_executable, std::chrono::nanoseconds timeout = std::chrono::nanoseconds(-1));
 
     private:
-        RCLCPP_DISABLE_COPY(PreemptiveEDFExecutor)
+        RCLCPP_DISABLE_COPY(PreemptiveExecutor)
 
         /// Get the next executable with priority and deadline consideration
         /**
@@ -102,6 +102,6 @@ namespace preemptive_edf_executor
         /// TODO : Need to add priority and deadline maps based on README data
     };
 
-} // namespace preemptive_edf_executor
+} // namespace preemptive_executor
 
 #endif // PREEMPTIVE_EDF_EXECUTOR__PREEMPTIVE_EDF_EXECUTOR_HPP_

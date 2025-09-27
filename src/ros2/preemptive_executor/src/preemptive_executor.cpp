@@ -1,4 +1,4 @@
-#include "preemptive_edf_executor/preemptive_edf_executor.hpp"
+#include "preemptive_executor/preemptive_executor.hpp"
 
 #include <chrono>
 #include <functional>
@@ -15,7 +15,7 @@
 #include "rclcpp/logging.hpp"
 #include "rclcpp/utilities.hpp"
 
-using preemptive_edf_executor::PreemptiveEDFExecutor;
+using preemptive_executor::PreemptiveExecutor;
 
 // Helper function to set SCHED_DEADLINE parameters
 static int set_deadline_scheduling(int runtime_ns, int deadline_ns, int period_ns)
@@ -38,7 +38,7 @@ static int set_deadline_scheduling(int runtime_ns, int deadline_ns, int period_n
     return 0;
 }
 
-PreemptiveEDFExecutor::PreemptiveEDFExecutor(
+PreemptiveExecutor::PreemptiveExecutor(
     const rclcpp::ExecutorOptions &options,
     size_t number_of_threads,
     std::chrono::nanoseconds timeout)
@@ -56,9 +56,9 @@ PreemptiveEDFExecutor::PreemptiveEDFExecutor(
     }
 }
 
-PreemptiveEDFExecutor::~PreemptiveEDFExecutor() {}
+PreemptiveExecutor::~PreemptiveExecutor() {}
 
-void PreemptiveEDFExecutor::spin()
+void PreemptiveExecutor::spin()
 {
     // When the executor is already spinning, throw an error
     if (spinning.exchange(true))
@@ -72,12 +72,12 @@ void PreemptiveEDFExecutor::spin()
 }
 
 size_t
-PreemptiveEDFExecutor::get_number_of_threads() const
+PreemptiveExecutor::get_number_of_threads() const
 {
     return number_of_threads_;
 }
 
-void PreemptiveEDFExecutor::run(size_t this_thread_number)
+void PreemptiveExecutor::run(size_t this_thread_number)
 {
     (void)this_thread_number;
 
