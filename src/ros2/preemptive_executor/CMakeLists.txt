@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(priority_edf_executor)
+project(preemptive_executor)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -22,34 +22,34 @@ find_package(rcl REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 
-add_library(priority_edf_executor src/priority_edf_executor.cpp src/edf_memory_strategy.cpp)
-target_include_directories(priority_edf_executor PUBLIC
+add_library(preemptive_executor src/preemptive_executor.cpp src/preemptive_executor_interface.cpp)
+target_include_directories(preemptive_executor PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(priority_edf_executor
+ament_target_dependencies(preemptive_executor
   rmw
   rclcpp
   rcl
 )
 
-add_library(multithread_edf_executor src/multithread_edf_executor.cpp src/edf_memory_strategy.cpp)
-target_include_directories(multithread_edf_executor PUBLIC
+add_library(multithread_preemptive_executor src/multithread_preemptive_executor.cpp src/preemptive_executor_interface.cpp)
+target_include_directories(multithread_preemptive_executor PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(multithread_edf_executor
+ament_target_dependencies(multithread_preemptive_executor
   rmw
   rclcpp
   rcl
 )
 
-add_library(default_edf_executor src/default_edf_executor.cpp)
-target_include_directories(default_edf_executor PUBLIC
+add_library(default_preemptive_executor src/default_preemptive_executor.cpp)
+target_include_directories(default_preemptive_executor PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(default_edf_executor
+ament_target_dependencies(default_preemptive_executor
   rmw
   rclcpp
   rcl
@@ -60,7 +60,7 @@ target_include_directories(usage_example PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_link_libraries(usage_example
-  priority_edf_executor
+  preemptive_executor
 )
 ament_target_dependencies(usage_example
   rclcpp
@@ -77,7 +77,7 @@ install(TARGETS usage_example
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(TARGETS priority_edf_executor multithread_edf_executor default_edf_executor
+install(TARGETS preemptive_executor multithread_preemptive_executor default_preemptive_executor
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -95,8 +95,8 @@ if(BUILD_TESTING)
 endif()
 
 ament_export_include_directories(include)
-ament_export_libraries(priority_edf_executor)
-ament_export_libraries(multithread_edf_executor)
-ament_export_libraries(default_edf_executor)
+ament_export_libraries(preemptive_executor)
+ament_export_libraries(multithread_preemptive_executor)
+ament_export_libraries(default_preemptive_executor)
 ament_export_dependencies(rclcpp rcl)
 ament_package()
