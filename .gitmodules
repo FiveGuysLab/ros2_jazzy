@@ -1,0 +1,3 @@
+[submodule "src/ros2/preemptive_executor/preemptive-executor"]
+	path = src/ros2/preemptive_executor/preemptive-executor
+	url = https://github.com/FiveGuysLab/preemptive-executor.git
