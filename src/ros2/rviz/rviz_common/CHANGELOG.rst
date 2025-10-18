@@ -2,6 +2,11 @@
 Changelog for package rviz_common
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+14.1.16 (2025-09-26)
+--------------------
+* fix crash (`#1587 <https://github.com/ros2/rviz/issues/1587>`_) (`#1589 <https://github.com/ros2/rviz/issues/1589>`_)
+* Contributors: mergify[bot]
+
 14.1.15 (2025-09-17)
 --------------------
 * add ros action property (`#1549 <https://github.com/ros2/rviz/issues/1549>`_) (`#1577 <https://github.com/ros2/rviz/issues/1577>`_)
