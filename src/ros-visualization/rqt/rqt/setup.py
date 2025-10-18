@@ -3,7 +3,7 @@ from setuptools import setup
 package_name = 'rqt'
 setup(
     name=package_name,
-    version='1.6.0',
+    version='1.6.2',
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -17,7 +17,6 @@ setup(
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],

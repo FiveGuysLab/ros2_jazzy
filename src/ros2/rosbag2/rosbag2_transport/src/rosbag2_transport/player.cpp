@@ -226,7 +226,7 @@ public:
   size_t get_number_of_registered_on_play_msg_post_callbacks();
 
   /// \brief Getter for the first of the currently stored storage options
-  /// \return Copy of the first of the currently stored storage options
+  /// \return Reference to the first of the currently stored storage options
   const rosbag2_storage::StorageOptions & get_storage_options();
 
   /// \brief Getter for the currently stored storage options
@@ -328,14 +328,9 @@ private:
   Player * owner_;
   rosbag2_transport::PlayOptions play_options_;
   rcutils_time_point_value_t play_until_timestamp_ = -1;
-  using BagMessageComparator = std::function<
-    int(
-      const rosbag2_storage::SerializedBagMessageSharedPtr &,
-      const rosbag2_storage::SerializedBagMessageSharedPtr &)>;
-  LockedPriorityQueue<
-    rosbag2_storage::SerializedBagMessageSharedPtr,
-    std::vector<rosbag2_storage::SerializedBagMessageSharedPtr>,
-    BagMessageComparator> message_queue_;
+  LockedPriorityQueue<rosbag2_storage::SerializedBagMessageSharedPtr> message_queue_;
+  using BagMessageComparator =
+    LockedPriorityQueue<rosbag2_storage::SerializedBagMessageSharedPtr>::Comparator;
   mutable std::future<void> storage_loading_future_;
   std::atomic_bool load_storage_content_{true};
   std::unordered_map<std::string, rclcpp::QoS> topic_qos_profile_overrides_;
@@ -388,9 +383,12 @@ private:
       const rosbag2_storage::SerializedBagMessageSharedPtr & l,
       const rosbag2_storage::SerializedBagMessageSharedPtr & r) const
     {
-      return l->recv_timestamp > r->recv_timestamp;
+      return l->recv_timestamp > r->recv_timestamp;  // Smaller timestamp comes first
     }
   } bag_message_chronological_recv_timestamp_comparator;
+
+  // Note: The first_storage_options_ is used as a workaround for deprecated get_storage_options()
+  rosbag2_storage::StorageOptions first_storage_options_;
 };
 
 PlayerImpl::PlayerImpl(
@@ -405,6 +403,10 @@ PlayerImpl::PlayerImpl(
   keyboard_handler_(std::move(keyboard_handler)),
   player_service_client_manager_(std::make_shared<PlayerServiceClientManager>())
 {
+  if (play_options_.read_ahead_queue_size < 1) {
+    throw std::invalid_argument("read_ahead_queue_size must be at least 1");
+  }
+
   for (auto & topic : play_options_.topics_to_filter) {
     topic = rclcpp::expand_topic_or_service_name(
       topic, owner_->get_name(),
@@ -1017,7 +1019,7 @@ void PlayerImpl::load_storage_content()
   while (load_storage_content_ && !stop_playback_ && readers_->has_next()) {
     // The message queue size may get smaller after this, but that's OK
     const size_t message_queue_size = message_queue_.size();
-    if (message_queue_size < queue_lower_boundary) {
+    if (message_queue_size <= queue_lower_boundary) {
       enqueue_up_to_boundary(queue_upper_boundary, message_queue_size);
     } else {
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -1721,10 +1723,12 @@ void PlayerImpl::publish_clock_update(const rclcpp::Time & time)
 const rosbag2_storage::StorageOptions & PlayerImpl::get_storage_options()
 {
   auto all_storage_options = get_all_storage_options();
-  if (all_storage_options.size() < 1) {
+  if (all_storage_options.empty()) {
     throw std::runtime_error("Storage options not available.");
   }
-  return all_storage_options[0];
+  first_storage_options_ = all_storage_options[0];
+  // Note: Use first_storage_options_ as return value to keep the reference valid
+  return first_storage_options_;
 }
 
 std::vector<rosbag2_storage::StorageOptions> PlayerImpl::get_all_storage_options()

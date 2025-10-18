@@ -3,7 +3,7 @@ from setuptools import setup
 package_name = 'rqt_gui_py'
 setup(
     name=package_name,
-    version='1.6.0',
+    version='1.6.2',
     package_dir={'': 'src'},
     packages=['rqt_gui_py'],
     data_files=[
@@ -21,7 +21,6 @@ setup(
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
@@ -29,5 +28,9 @@ setup(
         'rqt_gui_py enables GUI plugins to use the Python client library for ROS.'
     ),
     license='BSD',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
 )
