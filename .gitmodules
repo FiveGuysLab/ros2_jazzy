@@ -1,3 +1,4 @@
 [submodule "src/ros2/preemptive-executor"]
 	path = src/ros2/preemptive-executor
 	url = https://github.com/FiveGuysLab/preemptive-executor.git
+	branch = main
